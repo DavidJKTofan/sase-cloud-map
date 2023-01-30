@@ -1,0 +1,24 @@
+name = "sase-cloud-map"
+main = "src/index.js"
+compatibility_date = "2022-11-04"
+usage_model = "unbound"
+account_id = "YOUR_ACCOUNT_ID_HERE"
+minify = true
+workers_dev = true
+
+kv_namespaces = [
+  { binding = "geodata", id = "YOUR_KV_ID_HERE", preview_id = "YOUR_KV_ID_HERE" }
+]
+
+# Define top-level environment variables
+[vars]
+CLOUDFLARE_LOCATIONS = "URL_HERE"
+ZSCALER_LOCATIONS = "URL_HERE"
+PERIMETER81_LOCATIONS = "URL_HERE"
+NORDLAYER_LOCATIONS = "URL_HERE"
+CISCO_LOCATIONS = "URL_HERE"
+# Add new vendors here...
+
+# Add a Cron Trigger for re-generating the KV data
+[triggers]
+crons = ["0 0 1 */4 *"]

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- HTML Meta Tags -->
+    <title>Where the Cloud Lives</title>
+    <meta name="description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta name="keywords" content="data centers, cloud, edge, datacenters, cloudflare" />
+    <link rel=icon href=https://www.cf-testing.com/favicon.png>
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Where the Cloud Lives" />
+    <meta property="og:description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta property="og:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="/" />
+    <meta property="twitter:url" content="/" />
+    <meta name="twitter:title" content="Where the Cloud Lives" />
+    <meta name="twitter:description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta name="twitter:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <style>
+      body {
+        background: #111827;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        font-family: sans-serif;
+      }
+      h1 {
+        font-size: 3em;
+        text-align: center;
+        color: #f6821f;
+      }
+      h2 {
+        text-align: center;
+      }
+      div.container {
+        width: 70vw;
+        background: #1e293b;
+        color: #ffffff;
+        border-radius: 1rem;
+        padding: 4rem;
+        margin-top: 5vh;
+        margin-bottom: 5vh;
+      }
+      #section {
+        width: 100%;
+        height: 20vh;
+      }
+      a {
+        color: #f6821f;
+      }
+      p span {
+        display: block;
+      }
+      .footer {
+        font-size: 0.5em;
+        margin-top: 2vh;
+      }
+      /* DarkMode credits to: BrendonKoz */
+      :root {
+        --map-tiles-filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+      }
+      .map-tiles {
+        filter: var(--map-tiles-filter, none);
+      }
+      /* Button styles */
+      .button-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .button {
+        width: 30%;
+        height: 50px;
+        margin: 10px;
+      }
+      a.button {
+        display: inline-block; /* display the links as block elements */
+        padding: 10px 20px; /* Add some padding to the links */
+        text-decoration: none; /* Remove the default text decoration for links */
+        color: #000; /* Set the text color */
+        background-color: #f2f2f2; /* Set the background color */
+        border: 1px solid #ccc; /* Add a border */
+        border-radius: 5px; /* Add rounded corners */
+        text-align: center; /* Center the text within the link */
+      }
+      a.button:hover {
+        font-weight: bold;
+        background-color: #a2bfff; /* Change the background color on hover */
+        cursor: pointer; /* Change the cursor to a pointer on hover */
+        transition: background-color 0.5s ease; /* Add a transition to the background color change */
+      }
+      /* Mobile CSS */
+      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) {
+        div.container {
+          width: 85vw;
+          background: #1e293b;
+          color: #ffffff;
+          border-radius: 1rem;
+          padding: 4rem;
+          margin-top: 5vh;
+          margin-bottom: 5vh;
+        }
+        .button {
+          width: 60%;
+          height: 50px;
+          margin: 10px;
+        }
+        a.button {
+          padding: 10px 20px;
+          font-size: 0.8em;
+          display: inline-block;
+          text-align: center;
+        }
+      }
+    </style>
+    <!-- UNPKG Modern CSS reset.min.css -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Where the Cloud Lives</h1>
+      <h2>An Interactive Map of Data Center Locations of Top Cloud Providers</h2>
+      <br />
+      <p>
+        This interactive map allows users to easily find and explore the approximate locations of data centers from major cloud providers,
+        which offer the entire suite or some form of
+        <a href="https://www.cloudflare.com/learning/access-management/what-is-sase/" rel="external" target="_blank">SASE</a> or
+        <a href="https://www.cloudflare.com/learning/security/glossary/what-is-zero-trust/" rel="external" target="_blank">Zero Trust</a>
+        solutions. It provides a visual representation of the locations of data centers and their geographic distribution.
+      </p>
+      <br />
+      <p>More Cloud Providers will be added soon...</p>
+      <br />
+      <div class="button-container">
+        <a href="/cloudflare" class="button" target="_blank">Cloudflare</a>
+        <a href="/zscaler" class="button" target="_blank">Zscaler</a>
+        <a href="/perimeter81" class="button" target="_blank">Perimeter81</a>
+        <a href="/nordlayer" class="button" target="_blank">NordLayer</a>
+        <!-- WORK IN PROGRESS -->
+        <!-- <a href="/cisco" class="button" target="_blank">Cisco</a> -->
+        <!-- <a href="/akamai" class="button" target="_blank">Akamai</a> -->
+        <!-- <a href="/aws" class="button" target="_blank">AWS</a> -->
+        <!-- <a href="/paloalto" class="button" target="_blank">Palo Alto Networks</a> -->
+      </div>
+      <br />
+      <div class="footer">
+        <p>
+          <b>Disclaimer:</b> the data displayed on this website is collected from publicly available sources on the Internet and is intended
+          for general informational and educational purposes only. Additionally, some locations might not actually offer all services or
+          might have other limitations. While we make every effort to ensure the accuracy and completeness of this information, we cannot
+          guarantee that it is completely reliable, current, or free from errors or omissions. This website and its owners shall not be held
+          liable for any damages or losses arising from the use of the information provided on this website. By accessing this website, you
+          agree to use the information provided here at your own risk.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

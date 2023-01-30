@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- HTML Meta Tags -->
+    <title>Where the Cloud Lives</title>
+    <meta name="description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta name="keywords" content="data centers, cloud, edge, datacenters, cloudflare" />
+    <link rel=icon href=https://www.cf-testing.com/favicon.png>
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Where the Cloud Lives" />
+    <meta property="og:description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta property="og:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="/" />
+    <meta property="twitter:url" content="/" />
+    <meta name="twitter:title" content="Where the Cloud Lives" />
+    <meta name="twitter:description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta name="twitter:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
+    <!-- Viewport -->
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <!-- Mapbox -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        min-height: 50%;
+      }
+      #info {
+        display: table;
+        position: relative;
+        margin: 0px auto;
+        word-wrap: anywhere;
+        white-space: pre-wrap;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        font-size: 11px;
+        text-align: center;
+        color: #222;
+        background: rgba(255, 255, 255, 0.8);
+      }
+      i {
+        font-style: italic;
+        font-size: 9px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Mapbox DIV -->
+    <div id="map"></div>
+    <pre id="info"></pre>
+    <script>
+      // Public Mapbox read-only Token
+      mapboxgl.accessToken = 'pk.eyJ1IjoidG90b3RhdHV0dSIsImEiOiJjbGRpdTh4anMwMjZuM3Brd2l2bmZ1M2RtIn0.FqpXdXrGTOj5Ee_jt_ED-Q'
+      const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/dark-v10', // style URL
+        zoom: 2, // starting zoom
+        center: [0, 0], // // starting center in [lng, lat]
+        projection: 'mercator', // display map as a 3D globe
+      })
+      map.on('load', () => {
+        map.loadImage(
+          'https://interactive.cf-testing.com/{{ SOURCE }}.png', // R2 assets
+          (error, image) => {
+            if (error) throw error
+            map.addImage('{{ SOURCE }}-marker', image)
+            map.addSource('{{ SOURCE }}', {
+              type: 'geojson',
+              data: {{ DATASET }}
+                      })
+            map.addLayer({
+              id: '{{ SOURCE }}-layer',
+              type: 'symbol',
+              source: '{{ SOURCE }}',
+              layout: {
+                'icon-image': '{{ SOURCE }}-marker',
+                // 'icon-size': 0.75,
+                'icon-size': {
+                  stops: [
+                          [4, 0.5], // Smaller icons at lower zoom levels
+                          [6, 2],
+                          [15, 2], // Larger icons at higher zoom levels
+                        ]
+                },
+                // get the title name from the source's "title" property
+                'text-field': ['get', 'title'],
+                'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+                'text-offset': [0, 1.25],
+                'text-anchor': 'top',
+                'icon-allow-overlap': true,
+                'icon-ignore-placement': true,
+              }
+            })
+          },
+        )
+      document.getElementById('info').innerHTML = "{{ SOURCE }} Data Center Locations<br><i>Disclaimer: data might be outdated or broken.</i>"
+        })
+    </script>
+    <!-- <footer>
+    <p>Disclaimer: Educational purposes only. All locations data should come from official sources, but might miss some data or only be approximations of reality.</p>
+  </footer> -->
+  </body>
+</html>

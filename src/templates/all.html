@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- HTML Meta Tags -->
+    <title>Where the Cloud Lives</title>
+    <meta name="description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta name="keywords" content="data centers, cloud, edge, datacenters, cloudflare" />
+    <link rel=icon href=https://www.cf-testing.com/favicon.png>
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Where the Cloud Lives" />
+    <meta property="og:description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta property="og:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="/" />
+    <meta property="twitter:url" content="/" />
+    <meta name="twitter:title" content="Where the Cloud Lives" />
+    <meta name="twitter:description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta name="twitter:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
+    <!-- Viewport -->
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <!-- Mapbox -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        min-height: 50%;
+      }
+      #info {
+        display: table;
+        position: relative;
+        margin: 0px auto;
+        word-wrap: anywhere;
+        white-space: pre-wrap;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        font-size: 12px;
+        text-align: center;
+        color: #222;
+        background: #fff;
+      }
+      #menu {
+        background: #fff;
+        position: absolute;
+        z-index: 1;
+        top: 10px;
+        right: 10px;
+        border-radius: 3px;
+        width: 120px;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        font-family: 'Open Sans', sans-serif;
+      }
+      #menu a {
+        font-size: 13px;
+        color: #404040;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        text-align: center;
+      }
+      #menu a:last-child {
+        border: none;
+      }
+      #menu a:hover {
+        background-color: #f8f8f8;
+        color: #404040;
+      }
+      #menu a.active {
+        background-color: #3887be;
+        color: #ffffff;
+      }
+      #menu a.active:hover {
+        background: #3074a4;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Mapbox DIV -->
+    <nav id="menu"></nav>
+    <div id="map"></div>
+    <pre id="info"></pre>
+    <script>
+      // Public Mapbox read-only Token
+      mapboxgl.accessToken = 'pk.eyJ1IjoidG90b3RhdHV0dSIsImEiOiJjbGRpdTh4anMwMjZuM3Brd2l2bmZ1M2RtIn0.FqpXdXrGTOj5Ee_jt_ED-Q'
+      const filterGroup = document.getElementById('filter-group');
+      const map = new mapboxgl.Map({
+          container: 'map', // container ID
+          // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+          style: 'mapbox://styles/mapbox/dark-v10', // style URL
+          zoom: 2, // starting zoom
+          center: [0, 0], // // starting center in [lng, lat]
+          projection: 'mercator', // display map as a 3D globe
+      })
+      function addLayer(map, imageUrl, dataset, markerName, layerId) {
+        map.loadImage(
+          imageUrl,
+          (error, image) => {
+            if (error) throw error
+            map.addImage(`${markerName}-marker`, image)
+            map.addSource(markerName, {
+              type: 'geojson',
+              data: dataset
+            })
+            map.addLayer({
+              id: `${layerId}-layer`,
+              type: 'symbol',
+              source: markerName,
+              layout: {
+                'visibility': 'visible',
+                'icon-image': `${markerName}-marker`,
+                'icon-size': {
+                  stops: [
+                    [4, 0.5], // Smaller icons at lower zoom levels
+                    [6, 2],
+                    [15, 2], // Larger icons at higher zoom levels
+                  ]
+                },
+                'text-field': ['get', 'title'],
+                'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+                'text-allow-overlap': true,
+                // 'text-ignore-placement': true,
+                'text-optional': true,
+                'text-offset': [10, 0],
+                'text-anchor': 'top',
+                // 'icon-offset': [Math.random() * (20 - (-10)) + (-10), Math.random() * (20 - (-10)) + (-10)], // Add a random range of numbers between -0.5 and 0.5 to the icon-offset property
+                'symbol-sort-key': ['get', 'id'], // Assign a unique sorting key based on the 'id' property of the feature
+                'icon-allow-overlap': false,
+                'icon-ignore-placement': true,
+                'icon-padding': 10, // Add a padding of 10 pixels around the icons
+                'symbol-spacing': 30, // Add a minimum distance of 30 pixels between icons
+                // Prevent icon overlapping requires adjusting the data in the dataset GeoJSON objects!
+              }
+            })
+          }
+        )
+      }
+      map.on('load', () => {
+        addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', {{ DATASET }}, 'cloudflare', 'cloudflare');
+        addLayer(map, 'https://interactive.cf-testing.com/zscaler.png', {{ DATASET_ZSCALER }}, 'zscaler', 'zscaler');
+        addLayer(map, 'https://interactive.cf-testing.com/cisco.png', {{ DATASET_CISCO }}, 'cisco', 'cisco');
+        addLayer(map, 'https://interactive.cf-testing.com/perimeter81.png', {{ DATASET_PERIMETER81 }}, 'perimeter81', 'perimeter81');
+        addLayer(map, 'https://interactive.cf-testing.com/nordlayer.png', {{ DATASET_NORDLAYER }}, 'nordlayer', 'nordlayer');
+        // Add other providers / layers here...
+      });
+      // Title
+      document.getElementById('info').innerHTML = "Data Center Locations";
+      // After the last frame rendered before the map enters an "idle" state.
+      map.on('idle', () => {
+          // If these two layers were not added to the map, abort
+          if (!map.getLayer('cloudflare-layer') || !map.getLayer('zscaler-layer') || !map.getLayer('cisco-layer') || !map.getLayer('perimeter81-layer') || !map.getLayer('nordlayer-layer')) {
+              return;
+          }
+          // Enumerate ids of the layers.
+          const toggleableLayerIds = ['cloudflare-layer', 'zscaler-layer', 'cisco-layer', 'perimeter81-layer', 'nordlayer-layer'];
+          // Set up the corresponding toggle button for each layer.
+          for (const id of toggleableLayerIds) {
+              // Skip layers that already have a button set up.
+              if (document.getElementById(id)) {
+                  continue;
+              }
+              // Create a link.
+              const link = document.createElement('a');
+              link.id = id;
+              link.href = '#';
+              link.textContent = id;
+              link.className = 'active';
+              // Show or hide layer when the toggle is clicked.
+              link.onclick = function (e) {
+                  const clickedLayer = this.textContent;
+                  e.preventDefault();
+                  e.stopPropagation();
+                  const visibility = map.getLayoutProperty(
+                      clickedLayer,
+                      'visibility'
+                  );
+                  // Toggle layer visibility by changing the layout object's visibility property.
+                  if (visibility === 'visible') {
+                      map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                      this.className = '';
+                  } else {
+                      this.className = 'active';
+                      map.setLayoutProperty(
+                          clickedLayer,
+                          'visibility',
+                          'visible'
+                      );
+                  }
+              };
+              const layers = document.getElementById('menu');
+              layers.appendChild(link);
+          }
+      });
+    </script>
+    <!-- <footer>
+    <p>Disclaimer: Educational purposes only. All locations data should come from official sources, but might miss some data or only be approximations of reality.</p>
+  </footer> -->
+  </body>
+</html>
