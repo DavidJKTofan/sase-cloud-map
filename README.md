@@ -4,6 +4,8 @@ This [application](https://map.cf-testing.com/) allows you to easily find and ex
 
 Depending on the provider, some locations might offer different solutions, performance metrics, and/or are only available with a surcharge.
 
+Check out this [Blog Post](https://davidtofan.com/articles/interactive-map-cloud-data-center-locations/) for more information.
+
 Below the current providers available:
 
 ## Cloudflare
