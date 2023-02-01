@@ -1,36 +1,21 @@
 export async function getCloudflare(env) {
   try {
     const cloudflareRanges = env.CLOUDFLARE_LOCATIONS
-    const locationData = await (await fetch(cloudflareRanges)).json()
-    const locations = locationData.prefixes
-    const uniqueLocations = [...new Set(locations.map(({ location }) => location))].filter((e) => e).filter((e) => e.length <= 3)
+    const locationData = await fetch(cloudflareRanges)
+    const data = await locationData.json()
 
     // GeoJSON skeleton
-    let geoJson = {
+    const geoJson = {
       type: 'FeatureCollection',
-      features: [],
+      features: data.map((location) => ({
+        type: 'Feature',
+        properties: { city: location.city },
+        geometry: {
+          type: 'Point',
+          coordinates: [location.lon, location.lat],
+        },
+      })),
     }
-
-    for (let index = 0; index < uniqueLocations.length; index++) {
-      const element = uniqueLocations[index]
-      const resp = await (
-        await fetch(`https://nominatim.openstreetmap.org/search?q=${element}&format=geojson&polygon=1&addressdetails=1&limit=5`, {
-          headers: {
-            'user-agent':
-              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36', // Chrome
-          },
-        })
-      ).json()
-
-      // GeoJSON
-      for (let index = 0; index < resp.features.length; index++) {
-        const element = resp.features[index]
-        if (element.properties.type === 'aerodrome') {
-          geoJson.features.push(element)
-        }
-      }
-    }
-
     // Conditional check to prevent updating nonesense
     if (
       geoJson.hasOwnProperty('features') &&
