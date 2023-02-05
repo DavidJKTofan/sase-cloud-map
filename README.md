@@ -32,6 +32,18 @@ Endpoint: `/nordlayer`
 
 Reference: https://nordlayer.com/cloud-vpn/ 
 
+## Cisco Umbrella
+
+Endpoint: `/cisco`
+
+Reference: https://umbrella.cisco.com/why-umbrella/global-network-and-traffic 
+
+### Cisco Duo (not displayed)
+
+The infrastructure for the Duo services runs on Amazon Web Services (AWS) in 9 countries.
+
+Reference: https://duo.com/support/security-and-reliability
+
 * * * * *
 
 # Contributions Welcomed

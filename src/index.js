@@ -11,7 +11,7 @@ import allHtml from './templates/all.html'
 import homepageHTML from './templates/homepage.html'
 
 // Return geoJSON data as JSON file
-// Example: https://map.cf-testing.com/cloudflare.json
+// Example: https://sasecloudmap.com/cloudflare.json
 const handleJsonRequest = async (pathname, env) => {
   const regex = /^\/([^.]*)\./
   const dataset = regex.exec(pathname)
@@ -20,16 +20,36 @@ const handleJsonRequest = async (pathname, env) => {
 }
 
 // Return geoJSON map of a specific provider
-// Example: https://map.cf-testing.com/cloudflare
+// Example: https://sasecloudmap.com/cloudflare
 const handleHTMLRequest = async (pathname, env) => {
   const dataset = pathname.split('/')[1]
   const req = await env.geodata.get(dataset, { cacheTtl: 3600, type: 'json' })
-  if (req === null) {
-    return new Response('Value not found', { status: 404 })
+  // For comparison with Cloudflare
+  if (dataset !== 'cloudflare') {
+    const cf_kv = await env.geodata.get('cloudflare', { cacheTtl: 3600, type: 'json' })
+    if (req === null || cf_kv === null) {
+      return new Response('KV values not found', { status: 404 })
+    }
+    return new Response(
+      html
+        .replace('{{ DATASET }}', JSON.stringify(req))
+        .replace('{{ CLOUDFLARE_DATASET }}', JSON.stringify(cf_kv))
+        .replaceAll('{{ SOURCE }}', dataset),
+      {
+        headers: { 'content-type': 'text/html' },
+      },
+    )
+  } else {
+    if (req === null) {
+      return new Response('KV values not found', { status: 404 })
+    }
+    return new Response(
+      html.replace('{{ DATASET }}', JSON.stringify(req)).replace('{{ CLOUDFLARE_DATASET }}', 'not_cf').replaceAll('{{ SOURCE }}', dataset),
+      {
+        headers: { 'content-type': 'text/html' },
+      },
+    )
   }
-  return new Response(html.replace('{{ DATASET }}', JSON.stringify(req)).replaceAll('{{ SOURCE }}', dataset), {
-    headers: { 'content-type': 'text/html' },
-  })
 }
 
 export default {
@@ -74,7 +94,7 @@ export default {
     // }
 
     // Illustrate all providers
-    // URL: https://map.cf-testing.com/all
+    // URL: https://sasecloudmap.com/all
     else if (pathname.startsWith('/all')) {
       // Read KVs
       const cloudflare = await env.geodata.get('cloudflare', { cacheTtl: 3600, type: 'json' })
@@ -99,7 +119,6 @@ export default {
     }
     // Return homepage
     else if (pathname === '/') {
-      // return new Response('Welcome!', { status: 200 })
       return new Response(homepageHTML, { headers: { 'content-type': 'text/html' }, status: 200 })
     }
     // Any other pathname returns a 404 not found

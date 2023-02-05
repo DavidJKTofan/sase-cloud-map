@@ -161,7 +161,7 @@
       document.getElementById('info').innerHTML = "Data Center Locations";
       // After the last frame rendered before the map enters an "idle" state.
       map.on('idle', () => {
-          // If these two layers were not added to the map, abort
+          // If these layers were not added to the map, abort
           if (!map.getLayer('cloudflare-layer') || !map.getLayer('zscaler-layer') || !map.getLayer('cisco-layer') || !map.getLayer('perimeter81-layer') || !map.getLayer('nordlayer-layer')) {
               return;
           }

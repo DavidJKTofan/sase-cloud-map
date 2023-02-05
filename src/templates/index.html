@@ -55,60 +55,171 @@
         font-style: italic;
         font-size: 9px;
       }
+      #menu {
+        background: #fff;
+        position: absolute;
+        z-index: 1;
+        top: 10px;
+        right: 10px;
+        border-radius: 3px;
+        width: 120px;
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        font-family: 'Open Sans', sans-serif;
+      }
+      #menu a {
+        font-size: 13px;
+        color: #404040;
+        display: block;
+        margin: 0;
+        padding: 0;
+        padding: 10px;
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+        text-align: center;
+      }
+      #menu a:last-child {
+        border: none;
+      }
+      #menu a:hover {
+        background-color: #f8f8f8;
+        color: #404040;
+      }
+      #menu a.active {
+        background-color: #3887be;
+        color: #ffffff;
+      }
+      #menu a.active:hover {
+        background: #3074a4;
+      }
     </style>
   </head>
   <body>
     <!-- Mapbox DIV -->
+    <nav id="menu"></nav>
     <div id="map"></div>
     <pre id="info"></pre>
     <script>
       // Public Mapbox read-only Token
       mapboxgl.accessToken = 'pk.eyJ1IjoidG90b3RhdHV0dSIsImEiOiJjbGRpdTh4anMwMjZuM3Brd2l2bmZ1M2RtIn0.FqpXdXrGTOj5Ee_jt_ED-Q'
+      const filterGroup = document.getElementById('filter-group');
       const map = new mapboxgl.Map({
-        container: 'map', // container ID
-        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-        style: 'mapbox://styles/mapbox/dark-v10', // style URL
-        zoom: 2, // starting zoom
-        center: [0, 0], // // starting center in [lng, lat]
-        projection: 'mercator', // display map as a 3D globe
+          container: 'map', // container ID
+          // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+          style: 'mapbox://styles/mapbox/dark-v10', // style URL
+          zoom: 2, // starting zoom
+          center: [0, 0], // // starting center in [lng, lat]
+          projection: 'mercator', // display map as a 3D globe
       })
-      map.on('load', () => {
+      function addLayer(map, imageUrl, dataset, markerName, layerId, visibility) {
         map.loadImage(
-          'https://interactive.cf-testing.com/{{ SOURCE }}.png', // R2 assets
+          imageUrl,
           (error, image) => {
             if (error) throw error
-            map.addImage('{{ SOURCE }}-marker', image)
-            map.addSource('{{ SOURCE }}', {
+            map.addImage(`${markerName}-marker`, image)
+            map.addSource(markerName, {
               type: 'geojson',
-              data: {{ DATASET }}
-                      })
+              data: dataset
+            })
             map.addLayer({
-              id: '{{ SOURCE }}-layer',
+              id: `${layerId}-layer`,
               type: 'symbol',
-              source: '{{ SOURCE }}',
+              source: markerName,
               layout: {
-                'icon-image': '{{ SOURCE }}-marker',
-                // 'icon-size': 0.75,
+                'visibility': visibility,
+                'icon-image': `${markerName}-marker`,
                 'icon-size': {
                   stops: [
-                          [4, 0.5], // Smaller icons at lower zoom levels
-                          [6, 2],
-                          [15, 2], // Larger icons at higher zoom levels
-                        ]
+                    [4, 0.5], // Smaller icons at lower zoom levels
+                    [6, 2],
+                    [15, 2], // Larger icons at higher zoom levels
+                  ]
                 },
-                // get the title name from the source's "title" property
                 'text-field': ['get', 'title'],
                 'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-                'text-offset': [0, 1.25],
+                'text-allow-overlap': true,
+                // 'text-ignore-placement': true,
+                'text-optional': true,
+                'text-offset': [10, 0],
                 'text-anchor': 'top',
+                // 'icon-offset': [Math.random() * (20 - (-10)) + (-10), Math.random() * (20 - (-10)) + (-10)], // Add a random range of numbers between -0.5 and 0.5 to the icon-offset property
+                'symbol-sort-key': ['get', 'id'], // Assign a unique sorting key based on the 'id' property of the feature
                 'icon-allow-overlap': true,
                 'icon-ignore-placement': true,
+                'icon-padding': 10, // Add a padding of 10 pixels around the icons
+                'symbol-spacing': 30, // Add a minimum distance of 30 pixels between icons
+                // Prevent icon overlapping requires adjusting the data in the dataset GeoJSON objects!
               }
             })
-          },
+          }
         )
+      }
+      // Title
       document.getElementById('info').innerHTML = "{{ SOURCE }} Data Center Locations<br><i>Disclaimer: data might be outdated or broken.</i>"
-        })
+      // Variables
+      var not_cf = 'not_cf';
+      const cloudflare_data = {{ CLOUDFLARE_DATASET }};
+      const original_datasets =  {{ DATASET }};
+      // Conditionals
+      // Show Cloudflare onlz
+      if (cloudflare_data == 'not_cf') {
+        map.on('load', () => {
+          addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', original_datasets, 'cloudflare', 'cloudflare', 'visible');
+        });
+        document.getElementById("menu").style.visibility = "hidden";
+      }
+      // Show comparison
+      else {
+        map.on('load', () => {
+          addLayer(map, 'https://interactive.cf-testing.com/{{ SOURCE }}.png', original_datasets, '{{ SOURCE }}', '{{ SOURCE }}', 'visible');
+          addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', cloudflare_data, 'cloudflare', 'cloudflare', 'none');
+        });
+        // After the last frame rendered before the map enters an "idle" state.
+        map.on('idle', () => {
+            // If these two layers were not added to the map, abort
+            if (!map.getLayer('cloudflare-layer') || !map.getLayer('{{ SOURCE }}-layer')) {
+                return;
+            }
+            // Enumerate ids of the layers.
+            const toggleableLayerIds = ['cloudflare-layer'];
+            // Set up the corresponding toggle button for each layer.
+            for (const id of toggleableLayerIds) {
+                // Skip layers that already have a button set up.
+                if (document.getElementById(id)) {
+                    continue;
+                }
+                // Create a link.
+                const link = document.createElement('a');
+                link.id = id;
+                link.href = '#';
+                link.textContent = 'Compare with Cloudflare';
+                link.className = '';
+                // Show or hide layer when the toggle is clicked.
+                link.onclick = function (e) {
+                    const clickedLayer = this.id;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const visibility = map.getLayoutProperty(
+                        clickedLayer,
+                        'visibility'
+                    );
+                    // Toggle layer visibility by changing the layout object's visibility property.
+                    if (visibility === 'visible') {
+                        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                        this.className = '';
+                    } else {
+                        this.className = 'active';
+                        map.setLayoutProperty(
+                            clickedLayer,
+                            'visibility',
+                            'visible'
+                        );
+                    }
+                };
+                const layers = document.getElementById('menu');
+                layers.appendChild(link);
+            }
+        });
+      }
     </script>
     <!-- <footer>
     <p>Disclaimer: Educational purposes only. All locations data should come from official sources, but might miss some data or only be approximations of reality.</p>
