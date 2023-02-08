@@ -159,13 +159,19 @@
       var not_cf = 'not_cf';
       const cloudflare_data = {{ CLOUDFLARE_DATASET }};
       const original_datasets =  {{ DATASET }};
+      // Create a Go Home link
+      const homelink = document.createElement('a');
+                homelink.id = 'go-home';
+                homelink.href = '/';
+                homelink.textContent = 'Home';
+        const layers = document.getElementById('menu');
+        layers.appendChild(homelink);
       // Conditionals
       // Show Cloudflare only
       if (cloudflare_data == 'not_cf') {
         map.on('load', () => {
           addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', original_datasets, 'cloudflare', 'cloudflare', 'visible');
         });
-        document.getElementById("menu").style.visibility = "hidden";
       }
       // Show comparison
       else {
@@ -173,13 +179,6 @@
           addLayer(map, 'https://interactive.cf-testing.com/{{ SOURCE }}.png', original_datasets, '{{ SOURCE }}', '{{ SOURCE }}', 'visible');
           addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', cloudflare_data, 'cloudflare', 'cloudflare', 'none');
         });
-        // Create a Go Home link
-        const homelink = document.createElement('a');
-                homelink.id = 'go-home';
-                homelink.href = '/';
-                homelink.textContent = 'Home';
-        const layers = document.getElementById('menu');
-        layers.appendChild(homelink);
         // After the last frame rendered before the map enters an "idle" state.
         map.on('idle', () => {
             // If these two layers were not added to the map, abort
