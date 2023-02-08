@@ -44,6 +44,12 @@ The infrastructure for the Duo services runs on Amazon Web Services (AWS) in 9 c
 
 Reference: https://duo.com/support/security-and-reliability
 
+## Cato Networks
+
+Endpoint: `/catonetworks`
+
+Reference: https://www.catonetworks.com/
+
 * * * * *
 
 # Contributions Welcomed

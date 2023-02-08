@@ -4,6 +4,7 @@ import { getZscaler } from './zscaler.js'
 import { getCisco } from './cisco.js'
 import { getPerimeter81 } from './perimeter81.js'
 import { getNordLayer } from './nordlayer.js'
+import { getCatoNetworks } from './catonetworks.js'
 
 // Import HTML templates
 import html from './templates/index.html'
@@ -75,6 +76,8 @@ export default {
       await getPerimeter81(env)
       console.debug('generating nordlayer dataset')
       await getNordLayer(env)
+      console.debug('generating catonetworks dataset')
+      await getCatoNetworks(env)
       return new Response('Generated all datasets. Success!', { status: 200 })
     } else if (pathname.endsWith('.json')) {
       return handleJsonRequest(pathname, env)
@@ -83,6 +86,7 @@ export default {
       pathname.startsWith('/cisco') ||
       pathname.startsWith('/perimeter81') ||
       pathname.startsWith('/nordlayer') ||
+      pathname.startsWith('/catonetworks') ||
       pathname.startsWith('/zscaler')
     ) {
       return handleHTMLRequest(pathname, env)
@@ -102,8 +106,16 @@ export default {
       const cisco = await env.geodata.get('cisco', { cacheTtl: 3600, type: 'json' })
       const perimeter81 = await env.geodata.get('perimeter81', { cacheTtl: 3600, type: 'json' })
       const nordlayer = await env.geodata.get('nordlayer', { cacheTtl: 3600, type: 'json' })
+      const catonetworks = await env.geodata.get('catonetworks', { cacheTtl: 3600, type: 'json' })
       // Conditional check
-      if (cloudflare === null || zscaler === null || cisco === null || perimeter81 === null || nordlayer === null) {
+      if (
+        cloudflare === null ||
+        zscaler === null ||
+        cisco === null ||
+        perimeter81 === null ||
+        nordlayer === null ||
+        catonetworks === null
+      ) {
         return new Response('KV values not found', { status: 404 })
       }
       // Insert geoJSON data into the HTML which includes filters
@@ -113,7 +125,8 @@ export default {
           .replace('{{ DATASET_ZSCALER }}', JSON.stringify(zscaler))
           .replace('{{ DATASET_CISCO }}', JSON.stringify(cisco))
           .replace('{{ DATASET_PERIMETER81 }}', JSON.stringify(perimeter81))
-          .replace('{{ DATASET_NORDLAYER }}', JSON.stringify(nordlayer)),
+          .replace('{{ DATASET_NORDLAYER }}', JSON.stringify(nordlayer))
+          .replace('{{ DATASET_CATONETWORKS }}', JSON.stringify(catonetworks)),
         { headers: { 'content-type': 'text/html' } },
       )
     }

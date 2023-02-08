@@ -54,8 +54,6 @@ export async function getNordLayer(env) {
       }
     }
 
-    console.log('FINAL: ', geoJson)
-
     // Conditional check to prevent updating nonesense
     if (
       geoJson.hasOwnProperty('features') &&
