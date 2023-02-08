@@ -154,13 +154,13 @@
         )
       }
       // Title
-      document.getElementById('info').innerHTML = "{{ SOURCE }} Data Center Locations<br><i>Disclaimer: data might be outdated or broken.</i>"
+      document.getElementById('info').innerHTML = "<b>{{ SOURCE }}</b> Data Center Locations<br><i>Disclaimer: data might be outdated or broken.</i>"
       // Variables
       var not_cf = 'not_cf';
       const cloudflare_data = {{ CLOUDFLARE_DATASET }};
       const original_datasets =  {{ DATASET }};
       // Conditionals
-      // Show Cloudflare onlz
+      // Show Cloudflare only
       if (cloudflare_data == 'not_cf') {
         map.on('load', () => {
           addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', original_datasets, 'cloudflare', 'cloudflare', 'visible');
@@ -173,6 +173,13 @@
           addLayer(map, 'https://interactive.cf-testing.com/{{ SOURCE }}.png', original_datasets, '{{ SOURCE }}', '{{ SOURCE }}', 'visible');
           addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', cloudflare_data, 'cloudflare', 'cloudflare', 'none');
         });
+        // Create a Go Home link
+        const homelink = document.createElement('a');
+                homelink.id = 'go-home';
+                homelink.href = '/';
+                homelink.textContent = 'Home';
+        const layers = document.getElementById('menu');
+        layers.appendChild(homelink);
         // After the last frame rendered before the map enters an "idle" state.
         map.on('idle', () => {
             // If these two layers were not added to the map, abort
