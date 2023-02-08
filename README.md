@@ -8,49 +8,18 @@ Check out this [Blog Post](https://davidtofan.com/articles/interactive-map-cloud
 
 Below the current providers available:
 
-## Cloudflare
+| Vendor                    | Endpoint                                                                                  | Reference                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Cloudflare                | `/cloudflare`                                                                             | https://www.cloudflare.com/network/                                        |
+| Zscaler                   | `/zscaler`                                                                                | https://trust.zscaler.com/zscaler.net/data-center-map                      |
+| Perimeter81               | `/perimeter81`                                                                            | https://www.perimeter81.com/global-datacenter-backbone                     |
+| NordLayer                 | `/nordlayer`                                                                              | https://nordlayer.com/cloud-vpn/                                           |
+| Cisco Umbrella            | `/cisco`                                                                                  | https://umbrella.cisco.com/why-umbrella/global-network-and-traffic         |
+| Cisco Duo (not displayed) | The infrastructure for the Duo services runs on Amazon Web Services (AWS) in 9 countries. | https://duo.com/support/security-and-reliability                           |
+| Cato Networks             | `/catonetworks`                                                                           | https://www.catonetworks.com/                                              |
+| Netskope                  | `/netskope`                                                                               | https://www.netskope.com/resources/data-sheets/netskope-newedge-data-sheet |
 
-Endpoint: `/cloudflare`
-
-Reference: https://www.cloudflare.com/network/
-
-## Zscaler
-
-Endpoint: `/zscaler`
-
-Reference: https://trust.zscaler.com/zscaler.net/data-center-map
-
-## Perimeter81
-
-Endpoint: `/perimeter81`
-
-Reference: https://www.perimeter81.com/global-datacenter-backbone
-
-## NordLayer
-
-Endpoint: `/nordlayer`
-
-Reference: https://nordlayer.com/cloud-vpn/ 
-
-## Cisco Umbrella
-
-Endpoint: `/cisco`
-
-Reference: https://umbrella.cisco.com/why-umbrella/global-network-and-traffic 
-
-### Cisco Duo (not displayed)
-
-The infrastructure for the Duo services runs on Amazon Web Services (AWS) in 9 countries.
-
-Reference: https://duo.com/support/security-and-reliability
-
-## Cato Networks
-
-Endpoint: `/catonetworks`
-
-Reference: https://www.catonetworks.com/
-
-* * * * *
+---
 
 # Contributions Welcomed
 
@@ -64,23 +33,23 @@ More Cloud Providers will be added soon (faster with your contributions)...
 
 Special thanks to all supporting entities/tools/softwares/packages/platforms/contributors... 🤓
 
-* Application deployed via [Cloudflare Workers](https://workers.cloudflare.com/) for FREE
-* Some code/scripts inspired by [Stack Overflow](https://stackoverflow.com/)
-* Parts of the code – specifically the regex parts – inspired by [ChatGPT](https://openai.com/blog/chatgpt/)
+- Application deployed via [Cloudflare Workers](https://workers.cloudflare.com/) for FREE
+- Some code/scripts inspired by [Stack Overflow](https://stackoverflow.com/)
+- Parts of the code – specifically the regex parts – inspired by [ChatGPT](https://openai.com/blog/chatgpt/)
 
 Built with 🧡.
 
 # Disclaimer
 
-Educational purposes only. 
+Educational purposes only.
 
 All trademarks, logos and brand names are the property of their respective owners. All company, product and service names used in this website are for identification and/or educational purposes only. Use of these names, trademarks and brands does not imply endorsement.
 
 This repo does not reflect the opinions of, and is not affiliated with any of the institutions mentioned here.
 
-* * * * *
+---
 
 # Some Inspirations
 
-* https://github.com/jsdelivr/globalping
-* https://github.com/bitdotioinc/cloud-latency-map
+- https://github.com/jsdelivr/globalping
+- https://github.com/bitdotioinc/cloud-latency-map

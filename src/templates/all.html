@@ -156,6 +156,7 @@
         addLayer(map, 'https://interactive.cf-testing.com/perimeter81.png', {{ DATASET_PERIMETER81 }}, 'perimeter81', 'perimeter81');
         addLayer(map, 'https://interactive.cf-testing.com/nordlayer.png', {{ DATASET_NORDLAYER }}, 'nordlayer', 'nordlayer');
         addLayer(map, 'https://interactive.cf-testing.com/catonetworks.png', {{ DATASET_CATONETWORKS }}, 'catonetworks', 'catonetworks');
+        addLayer(map, 'https://interactive.cf-testing.com/netskope.png', {{ DATASET_NETSKOPE }}, 'netskope', 'netskope');
         // Add other providers / layers here...
       });
       // Title
@@ -163,11 +164,11 @@
       // After the last frame rendered before the map enters an "idle" state.
       map.on('idle', () => {
           // If these layers were not added to the map, abort
-          if (!map.getLayer('cloudflare-layer') || !map.getLayer('zscaler-layer') || !map.getLayer('cisco-layer') || !map.getLayer('perimeter81-layer') || !map.getLayer('nordlayer-layer') || !map.getLayer('catonetworks-layer')) {
+          if (!map.getLayer('cloudflare-layer') || !map.getLayer('zscaler-layer') || !map.getLayer('cisco-layer') || !map.getLayer('perimeter81-layer') || !map.getLayer('nordlayer-layer') || !map.getLayer('catonetworks-layer') || !map.getLayer('netskope-layer')) {
               return;
           }
           // Enumerate ids of the layers.
-          const toggleableLayerIds = ['cloudflare-layer', 'zscaler-layer', 'cisco-layer', 'perimeter81-layer', 'nordlayer-layer', 'catonetworks-layer'];
+          const toggleableLayerIds = ['cloudflare-layer', 'zscaler-layer', 'cisco-layer', 'perimeter81-layer', 'nordlayer-layer', 'catonetworks-layer', 'netskope-layer'];
           // Set up the corresponding toggle button for each layer.
           for (const id of toggleableLayerIds) {
               // Skip layers that already have a button set up.

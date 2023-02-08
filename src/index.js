@@ -5,6 +5,7 @@ import { getCisco } from './cisco.js'
 import { getPerimeter81 } from './perimeter81.js'
 import { getNordLayer } from './nordlayer.js'
 import { getCatoNetworks } from './catonetworks.js'
+import { getNetskope } from './netskope.js'
 
 // Import HTML templates
 import html from './templates/index.html'
@@ -78,6 +79,8 @@ export default {
       await getNordLayer(env)
       console.debug('generating catonetworks dataset')
       await getCatoNetworks(env)
+      console.debug('generating netskope dataset')
+      await getNetskope(env)
       return new Response('Generated all datasets. Success!', { status: 200 })
     } else if (pathname.endsWith('.json')) {
       return handleJsonRequest(pathname, env)
@@ -87,6 +90,7 @@ export default {
       pathname.startsWith('/perimeter81') ||
       pathname.startsWith('/nordlayer') ||
       pathname.startsWith('/catonetworks') ||
+      pathname.startsWith('/netskope') ||
       pathname.startsWith('/zscaler')
     ) {
       return handleHTMLRequest(pathname, env)
@@ -107,6 +111,7 @@ export default {
       const perimeter81 = await env.geodata.get('perimeter81', { cacheTtl: 3600, type: 'json' })
       const nordlayer = await env.geodata.get('nordlayer', { cacheTtl: 3600, type: 'json' })
       const catonetworks = await env.geodata.get('catonetworks', { cacheTtl: 3600, type: 'json' })
+      const netskope = await env.geodata.get('netskope', { cacheTtl: 3600, type: 'json' })
       // Conditional check
       if (
         cloudflare === null ||
@@ -114,6 +119,7 @@ export default {
         cisco === null ||
         perimeter81 === null ||
         nordlayer === null ||
+        netskope === null ||
         catonetworks === null
       ) {
         return new Response('KV values not found', { status: 404 })
@@ -126,7 +132,8 @@ export default {
           .replace('{{ DATASET_CISCO }}', JSON.stringify(cisco))
           .replace('{{ DATASET_PERIMETER81 }}', JSON.stringify(perimeter81))
           .replace('{{ DATASET_NORDLAYER }}', JSON.stringify(nordlayer))
-          .replace('{{ DATASET_CATONETWORKS }}', JSON.stringify(catonetworks)),
+          .replace('{{ DATASET_CATONETWORKS }}', JSON.stringify(catonetworks))
+          .replace('{{ DATASET_NETSKOPE }}', JSON.stringify(netskope)),
         { headers: { 'content-type': 'text/html' } },
       )
     }
