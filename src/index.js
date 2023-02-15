@@ -34,8 +34,8 @@ const handleHTMLRequest = async (pathname, env) => {
     }
     return new Response(
       html
-        .replace('{{ DATASET }}', JSON.stringify(req))
-        .replace('{{ CLOUDFLARE_DATASET }}', JSON.stringify(cf_kv))
+        .replaceAll('{{ DATASET }}', JSON.stringify(req))
+        .replaceAll('{{ CLOUDFLARE_DATASET }}', JSON.stringify(cf_kv))
         .replaceAll('{{ SOURCE }}', dataset),
       {
         headers: { 'content-type': 'text/html' },
@@ -46,7 +46,10 @@ const handleHTMLRequest = async (pathname, env) => {
       return new Response('KV values not found', { status: 404 })
     }
     return new Response(
-      html.replace('{{ DATASET }}', JSON.stringify(req)).replace('{{ CLOUDFLARE_DATASET }}', 'not_cf').replaceAll('{{ SOURCE }}', dataset),
+      html
+        .replaceAll('{{ DATASET }}', JSON.stringify(req))
+        .replaceAll('{{ CLOUDFLARE_DATASET }}', 'not_cf')
+        .replaceAll('{{ SOURCE }}', dataset),
       {
         headers: { 'content-type': 'text/html' },
       },
@@ -127,7 +130,7 @@ export default {
       // Insert geoJSON data into the HTML which includes filters
       return new Response(
         allHtml
-          .replace('{{ DATASET }}', JSON.stringify(cloudflare))
+          .replaceAll('{{ DATASET }}', JSON.stringify(cloudflare))
           .replace('{{ DATASET_ZSCALER }}', JSON.stringify(zscaler))
           .replace('{{ DATASET_CISCO }}', JSON.stringify(cisco))
           .replace('{{ DATASET_PERIMETER81 }}', JSON.stringify(perimeter81))

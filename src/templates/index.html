@@ -23,8 +23,10 @@
     <!-- Viewport -->
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <!-- Mapbox -->
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <!-- <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet" />
+         <script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script> -->
+    <!-- Mapbox Conditional -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-supported/v2.0.0/mapbox-gl-supported.js"></script>
     <style>
       body {
         margin: 0;
@@ -54,6 +56,9 @@
       i {
         font-style: italic;
         font-size: 9px;
+      }
+      .cloudflare-icon {
+        visibility: hidden;
       }
       #menu {
         background: #fff;
@@ -99,136 +104,295 @@
     <div id="map"></div>
     <pre id="info"></pre>
     <script>
-      // Public Mapbox read-only Token
-      mapboxgl.accessToken = 'pk.eyJ1IjoidG90b3RhdHV0dSIsImEiOiJjbGRpdTh4anMwMjZuM3Brd2l2bmZ1M2RtIn0.FqpXdXrGTOj5Ee_jt_ED-Q'
-      const filterGroup = document.getElementById('filter-group');
-      const map = new mapboxgl.Map({
-          container: 'map', // container ID
-          // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-          style: 'mapbox://styles/mapbox/dark-v10', // style URL
-          zoom: 2, // starting zoom
-          center: [0, 0], // // starting center in [lng, lat]
-          projection: 'mercator', // display map as a 3D globe
-      })
-      function addLayer(map, imageUrl, dataset, markerName, layerId, visibility) {
-        map.loadImage(
-          imageUrl,
-          (error, image) => {
-            if (error) throw error
-            map.addImage(`${markerName}-marker`, image)
-            map.addSource(markerName, {
-              type: 'geojson',
-              data: dataset
-            })
-            map.addLayer({
-              id: `${layerId}-layer`,
-              type: 'symbol',
-              source: markerName,
-              layout: {
-                'visibility': visibility,
-                'icon-image': `${markerName}-marker`,
-                'icon-size': {
-                  stops: [
-                    [4, 0.5], // Smaller icons at lower zoom levels
-                    [6, 2],
-                    [15, 2], // Larger icons at higher zoom levels
-                  ]
-                },
-                'text-field': ['get', 'title'],
-                'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-                'text-allow-overlap': true,
-                // 'text-ignore-placement': true,
-                'text-optional': true,
-                'text-offset': [10, 0],
-                'text-anchor': 'top',
-                // 'icon-offset': [Math.random() * (20 - (-10)) + (-10), Math.random() * (20 - (-10)) + (-10)], // Add a random range of numbers between -0.5 and 0.5 to the icon-offset property
-                'symbol-sort-key': ['get', 'id'], // Assign a unique sorting key based on the 'id' property of the feature
-                'icon-allow-overlap': true,
-                'icon-ignore-placement': true,
-                'icon-padding': 10, // Add a padding of 10 pixels around the icons
-                'symbol-spacing': 30, // Add a minimum distance of 30 pixels between icons
-                // Prevent icon overlapping requires adjusting the data in the dataset GeoJSON objects!
-              }
-            })
+        // Load necessary Scripts
+        function loadScript(jsSource, cssSource, callback) {
+          const headElement = document.getElementsByTagName('head')[0];
+          const scriptElement = document.createElement('script');
+          const styleElement = document.createElement('link');
+          styleElement.href = cssSource;
+          styleElement.rel = 'stylesheet';
+          headElement.appendChild(styleElement);
+          function runCallback() {
+            if (callback) {
+              callback();
+              scriptElement.onload = scriptElement.onreadystatechange = null;
+              callback = null;
+            }
           }
-        )
-      }
-      // Title
-      document.getElementById('info').innerHTML = "<b>{{ SOURCE }}</b> Data Center Locations<br><i>Disclaimer: data might be outdated or broken.</i>"
-      // Variables
-      var not_cf = 'not_cf';
-      const cloudflare_data = {{ CLOUDFLARE_DATASET }};
-      const original_datasets =  {{ DATASET }};
-      // Create a Go Home link
-      const homelink = document.createElement('a');
-                homelink.id = 'go-home';
-                homelink.href = '/';
-                homelink.textContent = 'Home';
-        const layers = document.getElementById('menu');
-        layers.appendChild(homelink);
-      // Conditionals
-      // Show Cloudflare only
-      if (cloudflare_data == 'not_cf') {
-        map.on('load', () => {
-          addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', original_datasets, 'cloudflare', 'cloudflare', 'visible');
-        });
-      }
-      // Show comparison
-      else {
-        map.on('load', () => {
-          addLayer(map, 'https://interactive.cf-testing.com/{{ SOURCE }}.png', original_datasets, '{{ SOURCE }}', '{{ SOURCE }}', 'visible');
-          addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', cloudflare_data, 'cloudflare', 'cloudflare', 'none');
-        });
-        // After the last frame rendered before the map enters an "idle" state.
-        map.on('idle', () => {
-            // If these two layers were not added to the map, abort
-            if (!map.getLayer('cloudflare-layer') || !map.getLayer('{{ SOURCE }}-layer')) {
-                return;
+          scriptElement.type = 'text/javascript';
+          // Most browsers
+          scriptElement.onload = runCallback;
+          // Internet Explorer
+          scriptElement.onreadystatechange = function () {
+            if (this.readyState === 'complete') {
+              runCallback();
             }
-            // Enumerate ids of the layers.
-            const toggleableLayerIds = ['cloudflare-layer'];
-            // Set up the corresponding toggle button for each layer.
-            for (const id of toggleableLayerIds) {
-                // Skip layers that already have a button set up.
-                if (document.getElementById(id)) {
-                    continue;
+          };
+          scriptElement.src = jsSource;
+          headElement.appendChild(scriptElement);
+        }
+
+        // Mapbox Conditional
+        if (mapboxgl.supported() === false) { // Default should be false
+          // This is where you will load Mapbox.js & initialize a Static Tile map (loads slower)
+          loadScript(
+          'https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.js',
+          'https://api.mapbox.com/mapbox.js/v3.2.1/mapbox.css',
+          initMapboxJS
+          );
+          console.log("Initialize legacy Mapbox JS...")
+          console.log("You are probably using Cloudflare RBI, no?")
+        } else {
+              // This is where you will load Mapbox GL JS & initialize a WebGL map (loads faster)
+              loadScript(
+          'https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js',
+          'https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css',
+          initMapboxGLJS
+          );
+          console.log("Initialize Mapbox GL JS with WebGL...")
+        }
+
+        // MAIN VARIABLES
+        var not_cf = 'not_cf';
+        const icon_url1 = 'https://interactive.cf-testing.com/cloudflare.png';
+        const icon_url2 = 'https://interactive.cf-testing.com/{{ SOURCE }}.png';
+        const cloudflare_data = {{ CLOUDFLARE_DATASET }};
+        const original_datasets = {{ DATASET }};
+
+        // GENERAL SCRIPTS
+        // Title
+        document.getElementById('info').innerHTML = "<b>{{ SOURCE }}</b> Data Center Locations<br><i>Disclaimer: data might be outdated or broken.</i>"
+        // Create a Go Home link
+        const homelink = document.createElement('a');
+                  homelink.id = 'go-home';
+                  homelink.href = '/';
+                  homelink.textContent = 'Home';
+          const layers = document.getElementById('menu');
+          layers.appendChild(homelink);
+
+        // LOADING MAPBOX
+        // Initialize legacy Mapbox JS
+        // For browsers that do NOT support WebGL
+        function initMapboxJS() {
+          L.mapbox.accessToken = 'pk.eyJ1IjoidG90b3RhdHV0dSIsImEiOiJjbGRpdTh4anMwMjZuM3Brd2l2bmZ1M2RtIn0.FqpXdXrGTOj5Ee_jt_ED-Q';
+          var map = L.mapbox.map('map')
+            .setView([0, 0], 3)
+            .addLayer(L.mapbox.styleLayer('mapbox://styles/mapbox/dark-v10'))
+          map.setMaxZoom(6);
+          map.setMinZoom(3);
+          // Set maximum bounds to prevent panning to the right or left
+          var maxBounds = L.latLngBounds(
+            L.latLng(-90, -180), // Southwest coordinates
+            L.latLng(90, 180)    // Northeast coordinates
+          );
+          map.setMaxBounds(maxBounds);
+          // Disable panning outside of the bounds
+          map.on('drag', function() {
+            map.panInsideBounds(maxBounds, { animate: false });
+          });
+          // Set iconURL and load GeoJSON data based on condition
+          var defaultIconUrl = '';
+          // One Vendor
+          if (cloudflare_data === 'not_cf') {
+            defaultIconUrl = icon_url1;
+            // Load icon
+            L.mapbox.marker.icon = L.icon({
+              iconUrl: defaultIconUrl,
+              iconSize: [18, 8],
+              iconAnchor: [0, 0],
+              popupAnchor: [0, 0]
+            });
+            // Create feature layer and set GeoJSON data
+            var myLayer = L.mapbox.featureLayer(null, {
+              pointToLayer: function(feature, latlon) {
+                return L.marker(latlon, {
+                  icon: L.mapbox.marker.icon
+                });
+              }
+            }).addTo(map);
+            // Load and display GeoJSON
+            myLayer.setGeoJSON(original_datasets);
+          }
+          // Vendor Comparison
+          else {
+            defaultIconUrl = icon_url2;
+            othertIconUrl = icon_url1;
+            // First Vendor
+            var myLayer = L.mapbox.featureLayer(null, {
+              pointToLayer: function(feature, latlon) {
+                return L.marker(latlon, {
+                  // Load icon
+                  icon: L.mapbox.marker.icon = L.icon({
+              iconUrl: defaultIconUrl,
+              iconSize: ["auto", "auto"],
+              iconAnchor: [0, 0],
+              popupAnchor: [0, 0],
+              className: "{{ SOURCE }}-icon"
+            })
+                });
+              }
+            }).addTo(map);
+            // Second Vendor
+            var myotherLayer = L.mapbox.featureLayer(null, {
+              pointToLayer: function(feature, latlon) {
+                return L.marker(latlon, {
+                  // Load icon
+                  icon: L.mapbox.marker.icon = L.icon({
+                      iconUrl: othertIconUrl,
+                      iconSize: ["auto", "auto"],
+                      iconAnchor: [0, 0],
+                      popupAnchor: [0, 0],
+                      className: "cloudflare-icon"
+                    })
+                });
+              },
+            }).addTo(map);
+            // Load and display GeoJSONs
+            myLayer.setGeoJSON(original_datasets);
+            myotherLayer.setGeoJSON(cloudflare_data);
+            // Create a link to toggle the visibility of cloudflare_data
+            var toggleLink = document.createElement('a');
+            toggleLink.href = '#';
+            toggleLink.innerText = 'Compare with Cloudflare';
+            toggleLink.onclick = function() {
+              var elements = document.getElementsByClassName("cloudflare-icon");
+              for (var i = 0; i < elements.length; i++) {
+                if (elements[i].style.visibility === 'hidden') {
+                  elements[i].style.visibility = "visible";
+                } else if (elements[i].style.visibility === 'visible') {
+                  elements[i].style.visibility = 'hidden';
+                } else {
+                  elements[i].style.visibility = "visible";
                 }
-                // Create a link.
-                const link = document.createElement('a');
-                link.id = id;
-                link.href = '#';
-                link.textContent = 'Compare with Cloudflare';
-                link.className = '';
-                // Show or hide layer when the toggle is clicked.
-                link.onclick = function (e) {
-                    const clickedLayer = this.id;
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const visibility = map.getLayoutProperty(
-                        clickedLayer,
-                        'visibility'
-                    );
-                    // Toggle layer visibility by changing the layout object's visibility property.
-                    if (visibility === 'visible') {
-                        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                        this.className = '';
-                    } else {
-                        this.className = 'active';
-                        map.setLayoutProperty(
-                            clickedLayer,
-                            'visibility',
-                            'visible'
-                        );
-                    }
-                };
-                const layers = document.getElementById('menu');
-                layers.appendChild(link);
+              }
             }
-        });
-      }
+            // Add the toggle link to the DOM
+            document.getElementById('menu').appendChild(toggleLink);
+          }
+        };
+
+        // Initialize Mapbox GL JS
+        // For modern browsers that do support WebGL
+        function initMapboxGLJS() {
+          // Public Mapbox read-only Token
+          mapboxgl.accessToken = 'pk.eyJ1IjoidG90b3RhdHV0dSIsImEiOiJjbGRpdTh4anMwMjZuM3Brd2l2bmZ1M2RtIn0.FqpXdXrGTOj5Ee_jt_ED-Q'
+          const filterGroup = document.getElementById('filter-group');
+          const map = new mapboxgl.Map({
+              container: 'map', // container ID
+              // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+              style: 'mapbox://styles/mapbox/dark-v10', // style URL
+              zoom: 2, // starting zoom
+              center: [0, 0], // // starting center in [lng, lat]
+              projection: 'mercator', // display map as a 3D globe
+              // cooperativeGestures: true // scroll-to-zoom requires using the control or command key while scrolling to zoom the map
+          })
+          function addLayer(map, imageUrl, dataset, markerName, layerId, visibility) {
+            map.loadImage(
+              imageUrl,
+              (error, image) => {
+                if (error) throw error
+                map.addImage(`${markerName}-marker`, image)
+                map.addSource(markerName, {
+                  type: 'geojson',
+                  data: dataset
+                })
+                map.addLayer({
+                  id: `${layerId}-layer`,
+                  type: 'symbol',
+                  source: markerName,
+                  layout: {
+                    'visibility': visibility,
+                    'icon-image': `${markerName}-marker`,
+                    'icon-size': {
+                      stops: [
+                        [4, 0.5], // Smaller icons at lower zoom levels
+                        [6, 2],
+                        [15, 2], // Larger icons at higher zoom levels
+                      ]
+                    },
+                    'text-field': ['get', 'title'],
+                    'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+                    'text-allow-overlap': true,
+                    // 'text-ignore-placement': true,
+                    'text-optional': true,
+                    'text-offset': [10, 0],
+                    'text-anchor': 'top',
+                    // 'icon-offset': [Math.random() * (20 - (-10)) + (-10), Math.random() * (20 - (-10)) + (-10)], // Add a random range of numbers between -0.5 and 0.5 to the icon-offset property
+                    'symbol-sort-key': ['get', 'id'], // Assign a unique sorting key based on the 'id' property of the feature
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true,
+                    'icon-padding': 10, // Add a padding of 10 pixels around the icons
+                    'symbol-spacing': 30, // Add a minimum distance of 30 pixels between icons
+                    // Prevent icon overlapping requires adjusting the data in the dataset GeoJSON objects!
+                  }
+                })
+              }
+            )
+          }
+          // Conditionals
+          // Show Cloudflare only
+          if (cloudflare_data == 'not_cf') {
+            map.on('load', () => {
+              addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', original_datasets, 'cloudflare', 'cloudflare', 'visible');
+            });
+          }
+          // Show comparison
+          else {
+            map.on('load', () => {
+              addLayer(map, 'https://interactive.cf-testing.com/{{ SOURCE }}.png', original_datasets, '{{ SOURCE }}', '{{ SOURCE }}', 'visible');
+              addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', cloudflare_data, 'cloudflare', 'cloudflare', 'none');
+            });
+            // After the last frame rendered before the map enters an "idle" state.
+            map.on('idle', () => {
+                // If these two layers were not added to the map, abort
+                if (!map.getLayer('cloudflare-layer') || !map.getLayer('{{ SOURCE }}-layer')) {
+                    return;
+                }
+                // Enumerate ids of the layers.
+                const toggleableLayerIds = ['cloudflare-layer'];
+                // Set up the corresponding toggle button for each layer.
+                for (const id of toggleableLayerIds) {
+                    // Skip layers that already have a button set up.
+                    if (document.getElementById(id)) {
+                        continue;
+                    }
+                    // Create a link.
+                    const link = document.createElement('a');
+                    link.id = id;
+                    link.href = '#';
+                    link.textContent = 'Compare with Cloudflare';
+                    link.className = '';
+                    // Show or hide layer when the toggle is clicked.
+                    link.onclick = function (e) {
+                        const clickedLayer = this.id;
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const visibility = map.getLayoutProperty(
+                            clickedLayer,
+                            'visibility'
+                        );
+                        // Toggle layer visibility by changing the layout object's visibility property.
+                        if (visibility === 'visible') {
+                            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                            this.className = '';
+                        } else {
+                            this.className = 'active';
+                            map.setLayoutProperty(
+                                clickedLayer,
+                                'visibility',
+                                'visible'
+                            );
+                        }
+                    };
+                    const layers = document.getElementById('menu');
+                    layers.appendChild(link);
+                }
+            });
+          }
+      };
     </script>
     <!-- <footer>
-    <p>Disclaimer: Educational purposes only. All locations data should come from official sources, but might miss some data or only be approximations of reality.</p>
-  </footer> -->
+         <p>Disclaimer: Educational purposes only. All locations data should come from official sources, but might miss some data or only be approximations of reality.</p>
+         </footer> -->
   </body>
 </html>
