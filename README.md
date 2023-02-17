@@ -1,6 +1,6 @@
 # Where the Cloud Lives: an Interactive Map of Data Center Locations of Top Cloud Providers
 
-This [application](https://sasecloudmap.com/) allows you to easily find and explore the approximate locations of data centers from major cloud providers, which offer the entire suite or some form of [SASE](https://www.cloudflare.com/learning/access-management/what-is-sase/) or [Zero Trust](https://www.cloudflare.com/learning/security/glossary/what-is-zero-trust/) solutions. It provides a visual representation of the locations of data centers and their geographic distribution.
+This [application](https://sasecloudmap.com/) allows you to easily find and explore the approximate locations of data centers (or Points of Presence) from major cloud providers, which offer the entire suite or some form of [SASE](https://www.cloudflare.com/learning/access-management/what-is-sase/) or [Zero Trust](https://www.cloudflare.com/learning/security/glossary/what-is-zero-trust/) solutions. It provides a visual representation of the locations of data centers and their geographic distribution.
 
 Depending on the provider, some locations might offer different solutions, performance metrics, and/or are only available with a surcharge.
 
