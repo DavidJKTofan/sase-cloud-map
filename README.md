@@ -8,16 +8,17 @@ Check out this [Blog Post](https://davidtofan.com/articles/interactive-map-cloud
 
 Below the current providers available:
 
-| Vendor                    | Endpoint                                                                                  | Reference                                                                  |
-| ------------------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Cloudflare                | `/cloudflare`                                                                             | https://www.cloudflare.com/network/                                        |
-| Zscaler                   | `/zscaler`                                                                                | https://trust.zscaler.com/zscaler.net/data-center-map                      |
-| Perimeter81               | `/perimeter81`                                                                            | https://www.perimeter81.com/global-datacenter-backbone                     |
-| NordLayer                 | `/nordlayer`                                                                              | https://nordlayer.com/cloud-vpn/                                           |
-| Cisco Umbrella            | `/cisco`                                                                                  | https://umbrella.cisco.com/why-umbrella/global-network-and-traffic         |
-| Cisco Duo (not displayed) | The infrastructure for the Duo services runs on Amazon Web Services (AWS) in 9 countries. | https://duo.com/support/security-and-reliability                           |
-| Cato Networks             | `/catonetworks`                                                                           | https://www.catonetworks.com/                                              |
-| Netskope                  | `/netskope`                                                                               | https://www.netskope.com/resources/data-sheets/netskope-newedge-data-sheet |
+| Vendor                    | Endpoint                                                                                  | Reference                                                                  | Auto-Updated    |
+| ------------------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------- |
+| Cloudflare                | `/cloudflare`                                                                             | https://www.cloudflare.com/network/                                        | ✅ |
+| Zscaler                   | `/zscaler`                                                                                | https://trust.zscaler.com/zscaler.net/data-center-map                      | ✅ |
+| Perimeter81               | `/perimeter81`                                                                            | https://www.perimeter81.com/global-datacenter-backbone                     | ✅ |
+| NordLayer                 | `/nordlayer`                                                                              | https://nordlayer.com/cloud-vpn/                                           | ✅ |
+| Cisco Umbrella            | `/cisco`                                                                                  | https://umbrella.cisco.com/why-umbrella/global-network-and-traffic         | ✅ |
+| Cisco Duo (not displayed) | The infrastructure for the Duo services runs on Amazon Web Services (AWS) in 9 countries. | https://duo.com/support/security-and-reliability                           | n/a |
+| Cato Networks             | `/catonetworks`                                                                           | https://www.catonetworks.com/                                              | ✅ |
+| Netskope                  | `/netskope`                                                                               | https://www.netskope.com/resources/data-sheets/netskope-newedge-data-sheet | ❌ |
+| Palo Alto Networks        | `/paloalto`                                                                               | https://www.paloaltonetworks.com/products/regional-cloud-locations         | 🚧 |
 
 ---
 

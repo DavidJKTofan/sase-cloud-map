@@ -284,6 +284,8 @@
               zoom: 2, // starting zoom
               center: [0, 0], // // starting center in [lng, lat]
               projection: 'mercator', // display map as a 3D globe
+              maxZoom: 6,
+              minZoom: 1,
               // cooperativeGestures: true // scroll-to-zoom requires using the control or command key while scrolling to zoom the map
           })
           function addLayer(map, imageUrl, dataset, markerName, layerId, visibility) {
