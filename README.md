@@ -34,7 +34,7 @@ More Cloud Providers will be added soon (faster with your contributions)...
 
 Special thanks to all supporting entities/tools/softwares/packages/platforms/contributors... 🤓
 
-- Application deployed via [Cloudflare Workers](https://workers.cloudflare.com/) for FREE
+- Application deployed via [Cloudflare Workers](https://workers.cloudflare.com/) for FREE (Backup Link: [sase-cloud-map.cf-testing.workers.dev](https://sase-cloud-map.cf-testing.workers.dev/))
 - Some code/scripts inspired by [Stack Overflow](https://stackoverflow.com/)
 - Parts of the code – specifically the regex parts – inspired by [ChatGPT](https://openai.com/blog/chatgpt/)
 
