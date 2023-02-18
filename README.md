@@ -1,6 +1,6 @@
 # Where the Cloud Lives: an Interactive Map of Data Center Locations of Top SASE Providers
 
-This [application](https://sasecloudmap.com/) allows users to easily find and explore the approximate locations of data centers (or Points of Presence) of major [SASE](https://www.cloudflare.com/learning/access-management/what-is-sase/) or [Zero Trust](https://www.cloudflare.com/learning/security/glossary/what-is-zero-trust/) providers, offering the entire suite or part of those solutions. It provides a visual representation of their service locations and geographic distribution.
+This [application](https://sasecloudmap.com/) allows users to easily find and explore the approximate locations of data centers or Point of Presence (PoP) of major [SASE](https://www.cloudflare.com/learning/access-management/what-is-sase/) or [Zero Trust](https://www.cloudflare.com/learning/security/glossary/what-is-zero-trust/) providers, offering the entire suite or part of those solutions. It provides a visual representation of their service locations and geographic distribution.
 
 Depending on the provider, some locations might offer different solutions, performance metrics, and/or are only available with a surcharge.
 
@@ -8,17 +8,18 @@ Depending on the provider, some locations might offer different solutions, perfo
 
 Below the current providers available:
 
-| Vendor                    | Endpoint                                                                                  | Reference                                                                  | Auto-Updated    |
-| ------------------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------- |
-| Cloudflare                | `/cloudflare`                                                                             | https://www.cloudflare.com/network/                                        | ✅ |
-| Zscaler                   | `/zscaler`                                                                                | https://trust.zscaler.com/zscaler.net/data-center-map                      | ✅ |
-| Perimeter81               | `/perimeter81`                                                                            | https://www.perimeter81.com/global-datacenter-backbone                     | ✅ |
-| NordLayer                 | `/nordlayer`                                                                              | https://nordlayer.com/cloud-vpn/                                           | ✅ |
-| Cisco Umbrella            | `/cisco`                                                                                  | https://umbrella.cisco.com/why-umbrella/global-network-and-traffic         | ✅ |
-| Cisco Duo (not displayed) | The infrastructure for the Duo services runs on Amazon Web Services (AWS) in 9 countries. | https://duo.com/support/security-and-reliability                           | n/a |
-| Cato Networks             | `/catonetworks`                                                                           | https://www.catonetworks.com/                                              | ✅ |
-| Netskope                  | `/netskope`                                                                               | https://www.netskope.com/resources/data-sheets/netskope-newedge-data-sheet | ❌ |
-| Palo Alto Networks        | `/paloalto`                                                                               | https://www.paloaltonetworks.com/products/regional-cloud-locations         | 🚧 |
+| Vendor                    | Endpoint                                                                                  | Reference                                                                                      | Auto-Updated |
+| ------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------ |
+| Cloudflare                | `/cloudflare`                                                                             | https://www.cloudflare.com/network/                                                            | ✅           |
+| Zscaler                   | `/zscaler`                                                                                | https://trust.zscaler.com/zscaler.net/data-center-map                                          | ✅           |
+| Perimeter81               | `/perimeter81`                                                                            | https://www.perimeter81.com/global-datacenter-backbone                                         | ✅           |
+| NordLayer                 | `/nordlayer`                                                                              | https://nordlayer.com/cloud-vpn/                                                               | ✅           |
+| Cisco Umbrella            | `/cisco`                                                                                  | https://umbrella.cisco.com/why-umbrella/global-network-and-traffic                             | ✅           |
+| Cisco Duo (not displayed) | The infrastructure for the Duo services runs on Amazon Web Services (AWS) in 9 countries. | https://duo.com/support/security-and-reliability                                               | n/a          |
+| Cato Networks             | `/catonetworks`                                                                           | https://www.catonetworks.com/                                                                  | ✅           |
+| Netskope                  | `/netskope`                                                                               | https://www.netskope.com/resources/data-sheets/netskope-newedge-data-sheet                     | ❌           |
+| Fortinet (FortiSASE)      | `/fortisase`                                                                               | https://docs.fortinet.com/document/fortisase/23.1.8/reference-guide/663044/global-data-centers | ✅           |
+| Palo Alto Networks        | `/paloalto`                                                                               | https://www.paloaltonetworks.com/products/regional-cloud-locations                             | 🚧           |
 
 ---
 

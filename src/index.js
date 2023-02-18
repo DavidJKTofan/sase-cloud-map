@@ -6,6 +6,7 @@ import { getPerimeter81 } from './perimeter81.js'
 import { getNordLayer } from './nordlayer.js'
 import { getCatoNetworks } from './catonetworks.js'
 import { getNetskope } from './netskope.js'
+import { getfortiSASE } from './fortisase.js'
 
 // Import HTML templates
 import html from './templates/index.html'
@@ -84,6 +85,8 @@ export default {
       await getCatoNetworks(env)
       console.debug('generating netskope dataset')
       await getNetskope(env)
+      console.debug('generating fortisase dataset')
+      await getfortiSASE(env)
       return new Response('Generated all datasets. Success!', { status: 200 })
     } else if (pathname.endsWith('.json')) {
       return handleJsonRequest(pathname, env)
@@ -94,6 +97,7 @@ export default {
       pathname.startsWith('/nordlayer') ||
       pathname.startsWith('/catonetworks') ||
       pathname.startsWith('/netskope') ||
+      pathname.startsWith('/fortisase') ||
       pathname.startsWith('/zscaler')
     ) {
       return handleHTMLRequest(pathname, env)
@@ -110,6 +114,7 @@ export default {
       // Read KVs
       const cloudflare = await env.geodata.get('cloudflare', { cacheTtl: 3600, type: 'json' })
       const zscaler = await env.geodata.get('zscaler', { cacheTtl: 3600, type: 'json' })
+      const fortisase = await env.geodata.get('fortisase', { cacheTtl: 3600, type: 'json' })
       const cisco = await env.geodata.get('cisco', { cacheTtl: 3600, type: 'json' })
       const perimeter81 = await env.geodata.get('perimeter81', { cacheTtl: 3600, type: 'json' })
       const nordlayer = await env.geodata.get('nordlayer', { cacheTtl: 3600, type: 'json' })
@@ -123,6 +128,7 @@ export default {
         perimeter81 === null ||
         nordlayer === null ||
         netskope === null ||
+        fortisase === null ||
         catonetworks === null
       ) {
         return new Response('KV values not found', { status: 404 })
@@ -136,7 +142,8 @@ export default {
           .replace('{{ DATASET_PERIMETER81 }}', JSON.stringify(perimeter81))
           .replace('{{ DATASET_NORDLAYER }}', JSON.stringify(nordlayer))
           .replace('{{ DATASET_CATONETWORKS }}', JSON.stringify(catonetworks))
-          .replace('{{ DATASET_NETSKOPE }}', JSON.stringify(netskope)),
+          .replace('{{ DATASET_NETSKOPE }}', JSON.stringify(netskope))
+          .replace('{{ DATASET_FORTISASE }}', JSON.stringify(fortisase)),
         { headers: { 'content-type': 'text/html' } },
       )
     }

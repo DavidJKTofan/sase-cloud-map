@@ -4,21 +4,21 @@
     <meta charset="utf-8" />
     <!-- HTML Meta Tags -->
     <title>Where the Cloud Lives</title>
-    <meta name="description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
-    <meta name="keywords" content="data centers, cloud, edge, datacenters, cloudflare" />
+    <meta name="description" content="An Interactive Map of Data Center Locations of Top SASE Providers." />
+    <meta name="keywords" content="data centers, cloud, edge, sase, datacenters, points of presence, cloudflare" />
     <link rel=icon href=https://www.cf-testing.com/favicon.png>
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Where the Cloud Lives" />
-    <meta property="og:description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta property="og:description" content="An Interactive Map of Data Center Locations of Top SASE Providers." />
     <meta property="og:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="twitter:domain" content="/" />
     <meta property="twitter:url" content="/" />
     <meta name="twitter:title" content="Where the Cloud Lives" />
-    <meta name="twitter:description" content="An Interactive Map of Data Center Locations of Top Cloud Providers." />
+    <meta name="twitter:description" content="An Interactive Map of Data Center Locations of Top SASE Providers." />
     <meta name="twitter:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
     <!-- Viewport -->
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
@@ -157,18 +157,19 @@
         addLayer(map, 'https://interactive.cf-testing.com/nordlayer.png', {{ DATASET_NORDLAYER }}, 'nordlayer', 'nordlayer');
         addLayer(map, 'https://interactive.cf-testing.com/catonetworks.png', {{ DATASET_CATONETWORKS }}, 'catonetworks', 'catonetworks');
         addLayer(map, 'https://interactive.cf-testing.com/netskope.png', {{ DATASET_NETSKOPE }}, 'netskope', 'netskope');
+        addLayer(map, 'https://interactive.cf-testing.com/fortisase.png', {{ DATASET_FORTISASE }}, 'fortisase', 'fortisase');
         // Add other providers / layers here...
       });
       // Title
-      document.getElementById('info').innerHTML = "Data Center Locations";
+      document.getElementById('info').innerHTML = "Points of Presence (PoPs)";
       // After the last frame rendered before the map enters an "idle" state.
       map.on('idle', () => {
           // If these layers were not added to the map, abort
-          if (!map.getLayer('cloudflare-layer') || !map.getLayer('zscaler-layer') || !map.getLayer('cisco-layer') || !map.getLayer('perimeter81-layer') || !map.getLayer('nordlayer-layer') || !map.getLayer('catonetworks-layer') || !map.getLayer('netskope-layer')) {
+          if (!map.getLayer('cloudflare-layer') || !map.getLayer('zscaler-layer') || !map.getLayer('cisco-layer') || !map.getLayer('perimeter81-layer') || !map.getLayer('nordlayer-layer') || !map.getLayer('catonetworks-layer') || !map.getLayer('netskope-layer') || !map.getLayer('fortisase-layer')) {
               return;
           }
           // Enumerate ids of the layers.
-          const toggleableLayerIds = ['cloudflare-layer', 'zscaler-layer', 'cisco-layer', 'perimeter81-layer', 'nordlayer-layer', 'catonetworks-layer', 'netskope-layer'];
+          const toggleableLayerIds = ['cloudflare-layer', 'zscaler-layer', 'cisco-layer', 'perimeter81-layer', 'nordlayer-layer', 'catonetworks-layer', 'netskope-layer', 'fortisase-layer'];
           // Set up the corresponding toggle button for each layer.
           for (const id of toggleableLayerIds) {
               // Skip layers that already have a button set up.
