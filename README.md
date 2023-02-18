@@ -1,10 +1,10 @@
-# Where the Cloud Lives: an Interactive Map of Data Center Locations of Top Cloud Providers
+# Where the Cloud Lives: an Interactive Map of Data Center Locations of Top SASE Providers
 
-This [application](https://sasecloudmap.com/) allows you to easily find and explore the approximate locations of data centers (or Points of Presence) from major cloud providers, which offer the entire suite or some form of [SASE](https://www.cloudflare.com/learning/access-management/what-is-sase/) or [Zero Trust](https://www.cloudflare.com/learning/security/glossary/what-is-zero-trust/) solutions. It provides a visual representation of the locations of data centers and their geographic distribution.
+This [application](https://sasecloudmap.com/) allows users to easily find and explore the approximate locations of data centers (or Points of Presence) of major [SASE](https://www.cloudflare.com/learning/access-management/what-is-sase/) or [Zero Trust](https://www.cloudflare.com/learning/security/glossary/what-is-zero-trust/) providers, offering the entire suite or part of those solutions. It provides a visual representation of their service locations and geographic distribution.
 
 Depending on the provider, some locations might offer different solutions, performance metrics, and/or are only available with a surcharge.
 
-Check out this [Blog Post](https://davidtofan.com/articles/interactive-map-cloud-data-center-locations/) for more information.
+> **_Learn more about_** [Zero Trust, SASE and SSE: foundational concepts for your next-generation network](https://blog.cloudflare.com/zero-trust-sase-and-sse-foundational-concepts-for-your-next-generation-network/)
 
 Below the current providers available:
 
@@ -37,6 +37,8 @@ Special thanks to all supporting entities/tools/softwares/packages/platforms/con
 - Application deployed via [Cloudflare Workers](https://workers.cloudflare.com/) for FREE (Backup Link: [sase-cloud-map.cf-testing.workers.dev](https://sase-cloud-map.cf-testing.workers.dev/))
 - Some code/scripts inspired by [Stack Overflow](https://stackoverflow.com/)
 - Parts of the code – specifically the regex parts – inspired by [ChatGPT](https://openai.com/blog/chatgpt/)
+
+Curious about how we built this? Check out this [blog post](https://davidtofan.com/articles/interactive-map-cloud-data-center-locations/).
 
 Built with 🧡.
 
