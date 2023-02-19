@@ -56,7 +56,7 @@ export async function getfortiSASE(env) {
       type: 'FeatureCollection',
       features: [],
     }
-    // Loop
+    // Loop through the OpenStreetMap API
     for (const result of results) {
       let city = result.city
       let state = result.state

@@ -18,8 +18,9 @@ Below the current providers available:
 | Cisco Duo (not displayed) | The infrastructure for the Duo services runs on Amazon Web Services (AWS) in 9 countries. | https://duo.com/support/security-and-reliability                                               | n/a          |
 | Cato Networks             | `/catonetworks`                                                                           | https://www.catonetworks.com/                                                                  | ✅           |
 | Netskope                  | `/netskope`                                                                               | https://www.netskope.com/resources/data-sheets/netskope-newedge-data-sheet                     | ❌           |
-| Fortinet (FortiSASE)      | `/fortisase`                                                                               | https://docs.fortinet.com/document/fortisase/23.1.8/reference-guide/663044/global-data-centers | ✅           |
+| Fortinet (FortiSASE)      | `/fortisase`                                                                              | https://docs.fortinet.com/document/fortisase/23.1.8/reference-guide/663044/global-data-centers | ✅           |
 | Palo Alto Networks        | `/paloalto`                                                                               | https://www.paloaltonetworks.com/products/regional-cloud-locations                             | 🚧           |
+| Forcepoint (locations for traffic processing)                | `/forcepoint`                                                                             | https://support.forcepoint.com/s/article/Cloud-service-data-center-IP-addresses-port-numbers   | ✅           |
 
 ---
 
