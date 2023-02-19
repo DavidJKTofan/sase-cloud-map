@@ -21,7 +21,7 @@ Below the current providers available:
 | Fortinet (FortiSASE)                            | `/fortisase`                                                                              | https://docs.fortinet.com/document/fortisase/23.1.8/reference-guide/663044/global-data-centers | ✅           |
 | Palo Alto Networks                              | `/paloalto`                                                                               | https://www.paloaltonetworks.com/products/regional-cloud-locations                             | 🚧           |
 | Forcepoint (_locations for traffic processing_) | `/forcepoint`                                                                             | https://support.forcepoint.com/s/article/Cloud-service-data-center-IP-addresses-port-numbers   | ✅           |
-| Twingate                                        | Twingate uses GCP data centers.                                                           | https://www.twingate.com/docs/twingate-security/                                               | n/a          |
+| Twingate (_not displayed_)                      | Twingate uses GCP data centers.                                                           | https://www.twingate.com/docs/twingate-security/                                               | n/a          |
 
 ---
 
