@@ -6,20 +6,20 @@
     <title>Where the Cloud Lives</title>
     <meta name="description" content="An Interactive Map of Data Center Locations of Top SASE Providers." />
     <meta name="keywords" content="data centers, cloud, edge, sase, datacenters, points of presence, cloudflare" />
-    <link rel=icon href=https://assets.sasecloudmap.com/favicon.png>
+    <link rel=icon href=https://interactive.cf-testing.com/favicon.png>
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Where the Cloud Lives" />
     <meta property="og:description" content="An Interactive Map of Data Center Locations of Top SASE Providers." />
-    <meta property="og:image" content="https://assets.sasecloudmap.com/map-thumbnail.png" />
+    <meta property="og:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="twitter:domain" content="/" />
     <meta property="twitter:url" content="/" />
     <meta name="twitter:title" content="Where the Cloud Lives" />
     <meta name="twitter:description" content="An Interactive Map of Data Center Locations of Top SASE Providers." />
-    <meta name="twitter:image" content="https://assets.sasecloudmap.com/map-thumbnail.png" />
+    <meta name="twitter:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
     <!-- Viewport -->
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <!-- Mapbox -->
@@ -150,15 +150,16 @@
         )
       }
       map.on('load', () => {
-        addLayer(map, 'https://assets.sasecloudmap.com/cloudflare.png', {{ DATASET }}, 'cloudflare', 'cloudflare');
-        addLayer(map, 'https://assets.sasecloudmap.com/zscaler.png', {{ DATASET_ZSCALER }}, 'zscaler', 'zscaler');
-        addLayer(map, 'https://assets.sasecloudmap.com/cisco.png', {{ DATASET_CISCO }}, 'cisco', 'cisco');
-        addLayer(map, 'https://assets.sasecloudmap.com/perimeter81.png', {{ DATASET_PERIMETER81 }}, 'perimeter81', 'perimeter81');
-        addLayer(map, 'https://assets.sasecloudmap.com/nordlayer.png', {{ DATASET_NORDLAYER }}, 'nordlayer', 'nordlayer');
-        addLayer(map, 'https://assets.sasecloudmap.com/catonetworks.png', {{ DATASET_CATONETWORKS }}, 'catonetworks', 'catonetworks');
-        addLayer(map, 'https://assets.sasecloudmap.com/netskope.png', {{ DATASET_NETSKOPE }}, 'netskope', 'netskope');
-        addLayer(map, 'https://assets.sasecloudmap.com/fortisase.png', {{ DATASET_FORTISASE }}, 'fortisase', 'fortisase');
-        addLayer(map, 'https://assets.sasecloudmap.com/forcepoint.png', {{ DATASET_FORCEPOINT }}, 'forcepoint', 'forcepoint');
+        addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', {{ DATASET }}, 'cloudflare', 'cloudflare');
+        addLayer(map, 'https://interactive.cf-testing.com/zscaler.png', {{ DATASET_ZSCALER }}, 'zscaler', 'zscaler');
+        addLayer(map, 'https://interactive.cf-testing.com/cisco.png', {{ DATASET_CISCO }}, 'cisco', 'cisco');
+        addLayer(map, 'https://interactive.cf-testing.com/perimeter81.png', {{ DATASET_PERIMETER81 }}, 'perimeter81', 'perimeter81');
+        addLayer(map, 'https://interactive.cf-testing.com/nordlayer.png', {{ DATASET_NORDLAYER }}, 'nordlayer', 'nordlayer');
+        addLayer(map, 'https://interactive.cf-testing.com/catonetworks.png', {{ DATASET_CATONETWORKS }}, 'catonetworks', 'catonetworks');
+        addLayer(map, 'https://interactive.cf-testing.com/netskope.png', {{ DATASET_NETSKOPE }}, 'netskope', 'netskope');
+        addLayer(map, 'https://interactive.cf-testing.com/fortisase.png', {{ DATASET_FORTISASE }}, 'fortisase', 'fortisase');
+        addLayer(map, 'https://interactive.cf-testing.com/forcepoint.png', {{ DATASET_FORCEPOINT }}, 'forcepoint', 'forcepoint');
+        addLayer(map, 'https://interactive.cf-testing.com/paloalto.png', {{ DATASET_PALOALTO }}, 'paloalto', 'paloalto');
         // Add other providers / layers here...
       });
       // Title
@@ -166,11 +167,11 @@
       // After the last frame rendered before the map enters an "idle" state.
       map.on('idle', () => {
           // If these layers were not added to the map, abort
-          if (!map.getLayer('cloudflare-layer') || !map.getLayer('zscaler-layer') || !map.getLayer('cisco-layer') || !map.getLayer('perimeter81-layer') || !map.getLayer('nordlayer-layer') || !map.getLayer('catonetworks-layer') || !map.getLayer('netskope-layer') || !map.getLayer('fortisase-layer') || !map.getLayer('forcepoint-layer')) {
+          if (!map.getLayer('cloudflare-layer') || !map.getLayer('zscaler-layer') || !map.getLayer('cisco-layer') || !map.getLayer('perimeter81-layer') || !map.getLayer('nordlayer-layer') || !map.getLayer('catonetworks-layer') || !map.getLayer('netskope-layer') || !map.getLayer('fortisase-layer') || !map.getLayer('forcepoint-layer') || !map.getLayer('paloalto-layer')) {
               return;
           }
           // Enumerate ids of the layers.
-          const toggleableLayerIds = ['cloudflare-layer', 'zscaler-layer', 'cisco-layer', 'perimeter81-layer', 'nordlayer-layer', 'catonetworks-layer', 'netskope-layer', 'fortisase-layer', 'forcepoint-layer'];
+          const toggleableLayerIds = ['cloudflare-layer', 'zscaler-layer', 'cisco-layer', 'perimeter81-layer', 'nordlayer-layer', 'catonetworks-layer', 'netskope-layer', 'fortisase-layer', 'forcepoint-layer', 'paloalto-layer'];
           // Set up the corresponding toggle button for each layer.
           for (const id of toggleableLayerIds) {
               // Skip layers that already have a button set up.

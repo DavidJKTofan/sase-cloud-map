@@ -19,9 +19,11 @@ Below the current providers available:
 | Cato Networks                                   | `/catonetworks`                                                                           | https://www.catonetworks.com/                                                                  | ✅           |
 | Netskope                                        | `/netskope`                                                                               | https://www.netskope.com/resources/data-sheets/netskope-newedge-data-sheet                     | ❌           |
 | Fortinet (FortiSASE)                            | `/fortisase`                                                                              | https://docs.fortinet.com/document/fortisase/23.1.8/reference-guide/663044/global-data-centers | ✅           |
-| Palo Alto Networks                              | `/paloalto`                                                                               | https://www.paloaltonetworks.com/products/regional-cloud-locations                             | 🚧           |
+| Palo Alto Networks (Prisma Access)              | `/paloalto`                                                                               | https://www.paloaltonetworks.com/products/regional-cloud-locations                             | 🚧           |
 | Forcepoint (_locations for traffic processing_) | `/forcepoint`                                                                             | https://support.forcepoint.com/s/article/Cloud-service-data-center-IP-addresses-port-numbers   | ✅           |
 | Twingate (_not displayed_)                      | Twingate uses GCP data centers.                                                           | https://www.twingate.com/docs/twingate-security/                                               | n/a          |
+| Proofpoint (_not displayed_)                    | Proofpoint uses public cloud and other data centers.                                        | https://www.proofpoint.com/us/legal/trust/subprocessors                                        | n/a          |
+| Tailscale (_not displayed_)                    | Tailscale uses point-to-point mesh network and a "coordination server".                                        | https://tailscale.com/blog/how-tailscale-works/                                       | n/a          |
 
 ---
 

@@ -6,20 +6,20 @@
     <title>{{ SOURCE }}'s Points of Presence (PoPs)</title>
     <meta name="description" content="An Interactive Map of {{ SOURCE }}'s Points of Presence." />
     <meta name="keywords" content="data centers, cloud, edge, sase, datacenters, points of presence, {{ SOURCE }}, cloudflare" />
-    <link rel=icon href=https://assets.sasecloudmap.com/favicon.png>
+    <link rel=icon href=https://interactive.cf-testing.com/favicon.png>
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ SOURCE }}'s Points of Presence" />
     <meta property="og:description" content="An Interactive Map of {{ SOURCE }}'s Points of Presence." />
-    <meta property="og:image" content="https://assets.sasecloudmap.com/map-thumbnail.png" />
+    <meta property="og:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="twitter:domain" content="/" />
     <meta property="twitter:url" content="/" />
     <meta name="twitter:title" content="{{ SOURCE }}'s Points of Presence" />
     <meta name="twitter:description" content="An Interactive Map of {{ SOURCE }}'s Points of Presence." />
-    <meta name="twitter:image" content="https://assets.sasecloudmap.com/map-thumbnail.png" />
+    <meta name="twitter:image" content="https://interactive.cf-testing.com/map-thumbnail.png" />
     <!-- Viewport -->
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <!-- Mapbox -->
@@ -154,8 +154,8 @@
 
         // MAIN VARIABLES
         var not_cf = 'not_cf';
-        const icon_url1 = 'https://assets.sasecloudmap.com/cloudflare.png';
-        const icon_url2 = 'https://assets.sasecloudmap.com/{{ SOURCE }}.png';
+        const icon_url1 = 'https://interactive.cf-testing.com/cloudflare.png';
+        const icon_url2 = 'https://interactive.cf-testing.com/{{ SOURCE }}.png';
         const cloudflare_data = {{ CLOUDFLARE_DATASET }};
         const original_datasets = {{ DATASET }};
 
@@ -335,14 +335,14 @@
           // Show Cloudflare only
           if (cloudflare_data == 'not_cf') {
             map.on('load', () => {
-              addLayer(map, 'https://assets.sasecloudmap.com/cloudflare.png', original_datasets, 'cloudflare', 'cloudflare', 'visible');
+              addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', original_datasets, 'cloudflare', 'cloudflare', 'visible');
             });
           }
           // Show comparison
           else {
             map.on('load', () => {
-              addLayer(map, 'https://assets.sasecloudmap.com/{{ SOURCE }}.png', original_datasets, '{{ SOURCE }}', '{{ SOURCE }}', 'visible');
-              addLayer(map, 'https://assets.sasecloudmap.com/cloudflare.png', cloudflare_data, 'cloudflare', 'cloudflare', 'none');
+              addLayer(map, 'https://interactive.cf-testing.com/{{ SOURCE }}.png', original_datasets, '{{ SOURCE }}', '{{ SOURCE }}', 'visible');
+              addLayer(map, 'https://interactive.cf-testing.com/cloudflare.png', cloudflare_data, 'cloudflare', 'cloudflare', 'none');
             });
             // After the last frame rendered before the map enters an "idle" state.
             map.on('idle', () => {

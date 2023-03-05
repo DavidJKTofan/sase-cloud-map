@@ -8,11 +8,13 @@ import { getCatoNetworks } from './catonetworks.js'
 import { getNetskope } from './netskope.js'
 import { getfortiSASE } from './fortisase.js'
 import { getForcepoint } from './forcepoint.js'
+import { getPaloAlto } from './paloalto.js'
 
 // Import HTML templates
 import html from './templates/index.html'
 import allHtml from './templates/all.html'
 import homepageHTML from './templates/homepage.html'
+import sitemap from './templates/sitemap.html'
 
 // Return geoJSON data as JSON file
 // Example: https://sasecloudmap.com/cloudflare.json
@@ -21,6 +23,22 @@ const handleJsonRequest = async (pathname, env) => {
   const dataset = regex.exec(pathname)
   const req = await env.geodata.get(dataset[1], { cacheTtl: 3600, type: 'json' })
   return new Response(JSON.stringify(req), { headers: { 'content-type': 'application/json' } })
+}
+
+// Standard HTTP Headers, including some security
+const standard_headers = {
+  'content-type': 'text/html',
+  // 'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+  // 'X-XSS-Protection': '1; mode=block',
+  // 'X-Frame-Options': 'SAMEORIGIN',
+  // 'X-Content-Type-Options': 'nosniff',
+  // 'Referrer-Policy': 'no-referrer',
+  // 'Permissions-Policy': 'fullscreen=(self), autoplay=(), geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()',
+  // 'Set-Cookie': 'SameSite=None; Secure',
+  // 'Cross-Origin-Embedder-Policy': 'require-corp; report-to="default";',
+  // 'Cross-Origin-Opener-Policy': 'same-site; report-to="default";',
+  // 'Cross-Origin-Resource-Policy': 'same-site',
+  // 'Access-Control-Allow-Origin': 'https://sasecloudmap.com/',
 }
 
 // Return geoJSON map of a specific provider
@@ -40,7 +58,7 @@ const handleHTMLRequest = async (pathname, env) => {
         .replaceAll('{{ CLOUDFLARE_DATASET }}', JSON.stringify(cf_kv))
         .replaceAll('{{ SOURCE }}', dataset),
       {
-        headers: { 'content-type': 'text/html' },
+        headers: standard_headers,
       },
     )
   } else {
@@ -53,7 +71,7 @@ const handleHTMLRequest = async (pathname, env) => {
         .replaceAll('{{ CLOUDFLARE_DATASET }}', 'not_cf')
         .replaceAll('{{ SOURCE }}', dataset),
       {
-        headers: { 'content-type': 'text/html' },
+        headers: standard_headers,
       },
     )
   }
@@ -69,6 +87,18 @@ export default {
     const pathname = url.pathname
     // Output pathname value to debug console
     console.debug('path:', pathname)
+
+    // SEO-related
+    if (pathname === '/robots.txt') {
+      return new Response('User-agent: *\nDisallow: /cdn-cgi/\n\nSitemap: https://sasecloudmap.com/sitemap.xml', {
+        headers: { 'Content-Type': 'text/plain' },
+      })
+    }
+    if (pathname === '/sitemap.xml') {
+      return new Response(sitemap, {
+        headers: { 'Content-Type': 'application/xml' },
+      })
+    }
 
     // Generate all datasets manually and with a custom Auth Header
     if (pathname === '/generate' && secret === env.generator) {
@@ -90,6 +120,8 @@ export default {
       await getfortiSASE(env)
       console.debug('generating forcepoint dataset')
       await getForcepoint(env)
+      console.debug('generating paloalto dataset')
+      await getPaloAlto(env)
       return new Response('Generated all datasets. Success!', { status: 200 })
     } else if (pathname.endsWith('.json')) {
       return handleJsonRequest(pathname, env)
@@ -102,6 +134,7 @@ export default {
       pathname.startsWith('/netskope') ||
       pathname.startsWith('/fortisase') ||
       pathname.startsWith('/forcepoint') ||
+      pathname.startsWith('/paloalto') ||
       pathname.startsWith('/zscaler')
     ) {
       return handleHTMLRequest(pathname, env)
@@ -125,6 +158,7 @@ export default {
       const catonetworks = await env.geodata.get('catonetworks', { cacheTtl: 3600, type: 'json' })
       const netskope = await env.geodata.get('netskope', { cacheTtl: 3600, type: 'json' })
       const forcepoint = await env.geodata.get('forcepoint', { cacheTtl: 3600, type: 'json' })
+      const paloalto = await env.geodata.get('paloalto', { cacheTtl: 3600, type: 'json' })
       // Conditional check
       if (
         cloudflare === null ||
@@ -135,6 +169,7 @@ export default {
         netskope === null ||
         fortisase === null ||
         forcepoint === null ||
+        paloalto === null ||
         catonetworks === null
       ) {
         return new Response('KV values not found', { status: 404 })
@@ -150,13 +185,14 @@ export default {
           .replace('{{ DATASET_CATONETWORKS }}', JSON.stringify(catonetworks))
           .replace('{{ DATASET_NETSKOPE }}', JSON.stringify(netskope))
           .replace('{{ DATASET_FORTISASE }}', JSON.stringify(fortisase))
-          .replace('{{ DATASET_FORCEPOINT }}', JSON.stringify(forcepoint)),
-        { headers: { 'content-type': 'text/html' } },
+          .replace('{{ DATASET_FORCEPOINT }}', JSON.stringify(forcepoint))
+          .replace('{{ DATASET_PALOALTO }}', JSON.stringify(paloalto)),
+        { headers: standard_headers },
       )
     }
     // Return homepage
     else if (pathname === '/') {
-      return new Response(homepageHTML, { headers: { 'content-type': 'text/html' }, status: 200 })
+      return new Response(homepageHTML, { headers: standard_headers, status: 200 })
     }
     // Any other pathname returns a 404 not found
     else {
