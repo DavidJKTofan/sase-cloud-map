@@ -61,3 +61,7 @@ This repo does not reflect the opinions of, and is not affiliated with any of th
 
 - https://github.com/jsdelivr/globalping
 - https://github.com/bitdotioinc/cloud-latency-map
+- https://www.datacentermap.com/
+- https://www.cloudinfrastructuremap.com/
+- https://www.infrapedia.com/
+- https://www.submarinecablemap.com/
