@@ -24,6 +24,7 @@ Below the current providers available:
 | Twingate (_not displayed_)                      | Twingate uses GCP data centers.                                                           | https://www.twingate.com/docs/twingate-security/                                               | n/a          |
 | Proofpoint (_not displayed_)                    | Proofpoint uses public cloud and other data centers.                                        | https://www.proofpoint.com/us/legal/trust/subprocessors                                        | n/a          |
 | Tailscale (_not displayed_)                    | Tailscale uses point-to-point mesh network and a "coordination server".                                        | https://tailscale.com/blog/how-tailscale-works/                                       | n/a          |
+| Check Point Harmony Connect (_not displayed_)                    | Harmony Connect cloud service Point of Presence (PoP) locations run on the public clouds AWS and Azure.                                        | https://www.checkpoint.com/harmony/connect-sase/                                       | n/a          |
 
 ---
 
